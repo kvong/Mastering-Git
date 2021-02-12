@@ -42,10 +42,16 @@ What happen if we didn't commit before rebase or merge?
 
 Relative References:
 - Instead of typing out the commit ID we can use the relative reference to checkout.
-	- <b>^</b> Moving backward one commit.
-		- `git checkout HEAD^`
+	- <b>^</b> Moving backward one commit ( to the parent ).
+		- Usage: `git checkout HEAD^`
+            - Checkout the parent of HEAD.
+        - Usage: `git checkout HEAD^2`
+            - Checkout the second parent of HEAD.
+            - A commit will have multiple parents if a merge has occurred.
 	- <b>`~<number>`</b> Moving backward `<number>` commits
-		- `git checkout HEAD~2`
+		- Usage: `git checkout HEAD~2`
+		- Usage: `git checkout HEAD~`
+            - Similar to `git checkout HEAD~1`
 
 Branch Forcing
 - We can force a branch to a commit by running `git branch -f main HEAD~3`
@@ -66,6 +72,7 @@ Moving Commits around with `git rebase -i`
 - An easier way to move around commits. Interactive rebase does not require the user to remember the commit they want to move.
 - For example: `git rebase -i HEAD~4` will take the 4 commits back prior to the commit HEAD is pointed at, then a text editor will open to allow the user to structure the 4 commits accordingly.
 - This does not rearrange the current instance of the commits but simply copy over and then rearrange in a different instance.
+- Usage: `git rebase -i <t-branch> <r-branch>` -- will take `r-branch` from the split point between `t-branch` and `r-branch`, and move it to `<t-branch>`. `r-branch` is optional, if not provided, this will be HEAD.
 
 
 A case for <b>interactive rebase</b> and <b>cherry-picking</b>:
@@ -74,3 +81,5 @@ A case for <b>interactive rebase</b> and <b>cherry-picking</b>:
 Amending an older commit:
 - Rebase approach: Suppose we have an older commit we wish to change. For example, we are on branch bugFix, and we want to modify commit C4 but our HEAD is on commit C5. Before amending C4, we must perform an interactive rebase of C4 and C5. We will make it that C4 is a head of C5. Then, change the content of C4 and commit with `git commit -amend`. Once C4 is updated, perform the interactive rebase again to reorder the commits in the correct order ( C4 then C5 ). Through out this process, if there is a merge conflict, it will need to be handled then before the rebase is completed. Finally with the new C4 then C5, we can perform a fast-forward merge. 
 - Cherry-Pick approach: Suppose we have an older commit we wish to change. For example, we are on branch bugFix, and we want to modify C5 but our HEAD is on commit C5. While we can use rebase to get the job done. Cherry-pick offer a much easier solution. Go to the node before C4, `git cherry-pick C4` to get a copy of C4, amend using `git commit --amend`. Now with the amended commit, we can run `git cherry-pick C5` to be placed after the amended C4. Any conflicts must be resolve while cherry-picking. If no conflict, it will be a fast-forward merge.
+
+Git tags can be used to mark certain commits. Set a tag using `git tag v1 Cx`. Leaving out the commit will put the tag on the HEAD. You cannot checkout a tag and perform work as tags only represents an anchor on a commit tree.
