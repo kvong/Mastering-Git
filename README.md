@@ -96,4 +96,7 @@ Git Fetch - Update the remote branch ( often named the origin/ branch ) to refle
 - Note: This does not change your local branch.
 - Note: This will update all remote branches.
 
-Git Pull - 
+Git Pull - download and update the local repository to match the remote repository.
+- Running `git pull` is a combination of `git merge && git pull`.
+
+
