@@ -83,3 +83,17 @@ Amending an older commit:
 - Cherry-Pick approach: Suppose we have an older commit we wish to change. For example, we are on branch bugFix, and we want to modify C5 but our HEAD is on commit C5. While we can use rebase to get the job done. Cherry-pick offer a much easier solution. Go to the node before C4, `git cherry-pick C4` to get a copy of C4, amend using `git commit --amend`. Now with the amended commit, we can run `git cherry-pick C5` to be placed after the amended C4. Any conflicts must be resolve while cherry-picking. If no conflict, it will be a fast-forward merge.
 
 Git tags can be used to mark certain commits. Set a tag using `git tag v1 Cx`. Leaving out the commit will put the tag on the HEAD. You cannot checkout a tag and perform work as tags only represents an anchor on a commit tree.
+
+## Git Remotes
+
+Git Clone - download a remote git repository to the local machine.
+- The clone repository contains branches that are a reflection of the remote repository. These branches are called remote branches, and they changes pushed from these the local branch will update the remote repository.
+- When we clone a repository, for all the branches that exists in that repository at that time, there will be a mirrored branch. For example, there will be a master branch along with a origin/master branch.
+- Example workflow: You want to work on a project so you'll run `git clone`. After you have added some work, run `git add` and then `git commit`. To update the change on to the repository run `git push`
+	- Note: While origin/main branch is seen when we run `git log` we cannot actually work with it. Any branch with origin/ means that it's where the remote repository is. While we can still checkout any of the origin/* branch, but commitng it will put us in a detached head state.
+
+Git Fetch - Update the remote branch ( often named the origin/ branch ) to reflect the current remote repository. 
+- Note: This does not change your local branch.
+- Note: This will update all remote branches.
+
+Git Pull - 
