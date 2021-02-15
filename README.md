@@ -25,6 +25,8 @@ What happens when there is a merge conflict?
 3. Three-way merge: Conflicting changes that git could not resolve with auto-merge. This will cancel the merge, ask the user to view the conflicted files by running `git status`. Once all conflicts are resolved `git commit -a` will create a new commit with the resolved changes, which the current branch will point to.
 
 Rebase in Git:
+- Syntax: `git rebase <base> <target>`
+	- The commit of the `target` appended to the `base`.
 - Another way of combining work between branches. 
 - Rebasing essentially takes a set of commits, "copies" them, and put them somewhere.
 - Advantage of rebasing is that it can used to create a linear sequence of commits. Cleaning up the `git log`.
