@@ -129,4 +129,35 @@ Remote Tracking - Forming a connection to the origin/<branch>.
 	- Another way is to run `git branch -u origin/main mainBranch`.
 		- If mainBranch is currently checkout run `git branch -u origin/main`.
 	
-
+Git push parameters.
+- Syntax: `git push <remote> <branch>`
+	- Update the `<remote>` with the name `<branch>` to match the local `<branch>`.
+- We can also push from another branch that is not being tracked by the remote.
+	- For example, what if we want to push `bugFix` on to the `main` remote?
+	- Running `git push origin <source>:<destination>` will do the trick!
+		- This is telling git to update `origin/<destination>` with the local `<source>` branch.
+		- Note: `<source>` does not have to be a branch it could be a reference as well ( HEAD~1 ).
+		- Note: `<destination>` does not have to be an existing branch. If it doesn't exist, git will simply create it, on both the remote and the local.
+		- Note: `<source>:<destination>` is called 'colon refspec'.
+Git fetch parameters.
+- Syntax: `git fetch <remote> <branch>`
+	- Download the `<remote>` branch named `<cranch>` to the local `<branch>`.
+- Git fetch behaves in the opposite way that `git pull` does.
+	- For example: `git fetch origin foo~1:bar` will look for `foo~1` on the `origin` remote and download it to `bar`.
+	- We don't usually do this because, incase we have some work on `bar`, fetching on to it will overwrite it. It would be better to run `git fetch origin foo~1` leaving the destination blank so that the `origin/foo` branch get updated instead, then running `git rebase origin/foo foo` to handle any conflicts.
+	- Note: Similarly to when we push, when we fetch, if the branch to download to does not exist, it will be created.
+- Note: Running `git fetch` with no argument will download all the commits form the remote on to the remote branches.
+		
+	
+Colon refspec: Above we can see that providing a `<source>:<destination>` tells git to do something with the branch. A neat trick arises when we provide nothing for `<source>` parameter.
+- Running `git fetch origin :<branch>` will create a new branch named `<branch>`. This makes sense because we are essentially telling git to pull nothing on to the branch `<branch>`. With nothing to pull a branch is simply crated with nothing added to it.
+- Running `git push origin :<destination>` will delete the remote branch named `<destination>`. Meaning that we are uploading nothing. Uploading nothing to a branch will delete it as it is now "nothing".
+	- Note: This deletion deletes both the remote and the local `<destination>` branch.
+	
+Git pull parameters
+- Remember that `git pull` is the same as `git fetch; git merge`. Breaking down these commands:
+	- `git pull origin foo` = `git fetch origin foo; git merge origin/foo`.
+		- Fetching the origin will update the `origin/foo` branch, then we can merge with the actual `foo` branch to apply our changes.
+	- `git pull origin bar~1:bugFix` = `git fetch origin bar~1:bugFix; git merge bugFix`.
+		- Fetching the remote `origin` commit location `bar~1` and downloading it to bugFix, then merging the current checkout branch with the newly downloaded `bugFix`.
+- Note: The same rule apply, if the destination to be downloaded to does not exist, it will be created.
