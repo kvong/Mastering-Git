@@ -97,6 +97,34 @@ Git Fetch - Update the remote branch ( often named the origin/ branch ) to refle
 - Note: This will update all remote branches.
 
 Git Pull - download and update the local repository to match the remote repository.
-- Running `git pull` is a combination of `git merge && git pull`.
+- Running `git pull` is a combination of `git fetch && git merge`.
+- Note: The merge is occuring between the local origin/ and the local branch
+- Example: Suppose on a local repository, you have your main branch on commit CX, and your main remote branch is on commit CY. Running `git pull` will, first download CY to the origin branch on the local repository, then it will run a `git merge` between the `main` and `origin/main`. 
 
+Git Push - Update the remote repository along with the `origin/`.
+
+
+Diverged Work - How do I update my work when the remote repository has been updated?
+- In cases where the work our commit is working off of is updated between we finish the work. We can run `git fetch`, then `git rebase` our commit on to the `origin/` branch, then run `git push`.
+	- Short hand for this is to do `git pull --rebase; git push`.
+- Using `git merge`: By running `git fetch; git merge origin/main; git push` we will perform a merge similar to the example above. However the difference is that the remote will have the merge as well. Unlike rebase, where the remote does not change to reflect our local repository.
+	- Short hand for this is to do `git pull; git push`.
+	
+Master is locked and is asking for a pull request.
+- Solution: 
+	1. Reset the main branch to be in sync as the remote by running `git branch -f main origin/main`.
+	2. Treat your changes as a new feature by running `git branch -f feature`.
+	3. Run `git push` on the `feature` branch to update the remote with a new branch that is ahead of `main`.
+	
+Rebase vs Merge:
+- Rebase will reorder the commit tree but keep the tree straight.
+- Merge will preserve the order of the commit history but will lead to a messy tree.
+
+Remote Tracking - Forming a connection to the origin/<branch>.
+- When we do a git clone. Git will automatically set up remote tracking from `main` to `origin/main`.
+- We can do this too using `git checkout`
+	- Running `git checkout -b newMain origin/main` will create a branch named `newMain` and sets it to track the `origin/main` branch. Thus, the next time we run a `git pull` the remote will download, and update to `newMain`.
+	- Another way is to run `git branch -u origin/main mainBranch`.
+		- If mainBranch is currently checkout run `git branch -u origin/main`.
+	
 
